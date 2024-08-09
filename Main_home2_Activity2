@@ -1,0 +1,48 @@
+package com.example.newactivityopening;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.widget.EditText;
+import android.widget.TextView;
+
+import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+
+public class MainActivity2 extends AppCompatActivity {
+TextView textView,textView1,textView2,textView3,textView4;
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
+        setContentView(R.layout.activity_main2);
+        textView = findViewById(R.id.textView);
+        textView1 = findViewById(R.id.textView1);
+        textView2 = findViewById(R.id.textView2);
+        textView3 = findViewById(R.id.textView3);
+        textView4 = findViewById(R.id.textView4);
+
+
+        Intent intent = getIntent();
+        String name1 = intent.getStringExtra(MainActivity.EXTRA_NAME);
+        String gMail = intent.getStringExtra(MainActivity.EMAIL_ID);
+        String passId = intent.getStringExtra(MainActivity.PASS_ID);
+        String timeId = intent.getStringExtra(MainActivity.TIME_ID);
+        String dateIn = intent.getStringExtra(MainActivity.Date_ID);
+        textView.setText("Name : "+name1);
+        textView1.setText("Person ID : "+passId);
+        textView2.setText("Gmail : "+gMail);
+        textView3.setText("In Time : "+timeId);
+        textView4.setText("Date : "+dateIn);
+
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
+    }
+}
