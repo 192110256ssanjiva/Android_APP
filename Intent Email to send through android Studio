@@ -1,0 +1,10 @@
+ String addresses[] = {"abc@appdeveloper.com","anonymas@usernoob.com"};
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.setType("*/*");
+                intent.putExtra(Intent.EXTRA_EMAIL, addresses);
+                intent.putExtra(Intent.EXTRA_SUBJECT, "007 Subject");
+                intent.putExtra(Intent.EXTRA_TEXT,urlText);
+               // intent.putExtra(Intent.EXTRA_STREAM, attachment);
+                if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
+                    startActivity(intent);
+                }
