@@ -1,0 +1,8 @@
+     String urlText = url.getText().toString();
+                Toast.makeText(getActivity(), urlText, Toast.LENGTH_SHORT).show();
+                Uri webpage = Uri.parse(urlText);
+                Intent intent = new Intent(Intent.ACTION_VIEW,webpage);
+                if (intent.resolveActivity(getActivity().getPackageManager()) != null){
+                    startActivity(intent);;
+                }
+            }
