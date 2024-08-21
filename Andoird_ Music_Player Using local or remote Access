@@ -1,0 +1,92 @@
+package com.example.musicplayer;
+
+import android.media.MediaPlayer;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.SeekBar;
+import android.widget.Toast;
+
+import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+
+import java.io.IOException;
+
+import kotlin.jvm.internal.markers.KMutableSet;
+//  <uses-permission android:name="android.permission.INTERNET" />
+//    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+// adding these lines in mainifest.xml
+
+public class MainActivity extends AppCompatActivity {
+private Button play, pause;
+private SeekBar seekBar;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
+        setContentView(R.layout.activity_main);
+        play = findViewById(R.id.play);
+        pause = findViewById(R.id.pause);
+        seekBar = findViewById(R.id.seekBar);
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
+        // local source
+        //MediaPlayer mediaPlayer = MediaPlayer.create(this, R.raw.musix);
+        //media player using web link(remote source)
+        MediaPlayer mediaPlayer = new MediaPlayer();
+        try {
+            mediaPlayer.setDataSource("https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mediaPlayer) {
+                Toast.makeText(MainActivity.this, "ready to play", Toast.LENGTH_SHORT).show();
+                mediaPlayer.start();
+                seekBar.setMax(mediaPlayer.getDuration());
+                seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                    @Override
+                    public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                        if (b){
+                            mediaPlayer.seekTo(i);
+                        }
+                    }
+
+                    @Override
+                    public void onStartTrackingTouch(SeekBar seekBar) {
+
+                    }
+
+                    @Override
+                    public void onStopTrackingTouch(SeekBar seekBar) {
+
+                    }
+                });
+            }
+        });
+        mediaPlayer.prepareAsync();
+       // mediaPlayer.start();
+        play.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(MainActivity.this, "Started", Toast.LENGTH_SHORT).show();
+                mediaPlayer.start();
+            }
+        });
+        pause.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(MainActivity.this, "Paused", Toast.LENGTH_SHORT).show();
+                mediaPlayer.pause();
+            }
+        });
+
+    }
+}
